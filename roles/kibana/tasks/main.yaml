@@ -1,0 +1,32 @@
+---
+  - name: install kibana
+    apt:
+      name: kibana
+
+  - name: enable service
+    service:
+      name: kibana
+      state: started
+      enabled: true
+
+  - name: bind kibana to local port
+    lineinfile:
+      path: /etc/kibana/kibana.yml
+      line: "{{ item }}"
+    with_items:
+      - 'server.port: 5601'
+      - 'server.host: "localhost"'
+      - >
+        elasticsearch.hosts:
+        [http://{{hostvars[groups['es_master'][0]]['ansible_default_ipv4']['address']}}:9200,
+        http://{{hostvars[groups['es_data'][0]]['ansible_default_ipv4']['address']}}:9200,
+        http://{{hostvars[groups['es_data'][1]]['ansible_default_ipv4']['address']}}:9200]
+    notify: restart kibana
+
+  - name: Add kibana user
+    lineinfile:
+      state: present
+      regexp: "^kibana:"
+      path: /etc/nginx/htpasswd.users
+      line: "kibana:{{kibana_pw}}"
+      create: yes

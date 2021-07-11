@@ -1,0 +1,36 @@
+---
+  - name: add elastic repo and gather info
+    hosts: all
+    become: yes
+    roles:
+      - apt_update
+      - elastic_repo
+
+  - name: install elasticsearch master
+    hosts: es_master
+    become: yes
+    gather_facts: no
+    roles:
+      - elasticsearch
+
+  - name: install elasticsearch slaves
+    hosts: es_data
+    become: yes
+    gather_facts: no
+    roles:
+      - elasticsearch
+
+  - name: kibana
+    hosts: kibana
+    become: yes
+    gather_facts: no
+    roles:
+      - kibana
+      - reverse_proxy
+
+  - name: logstash
+    hosts: logstash
+    become: yes
+    gather_facts: no
+    roles:
+      - logstash

@@ -1,0 +1,1 @@
+logger -p news.err "MY ERROR 123"

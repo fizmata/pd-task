@@ -1,0 +1,30 @@
+---
+  - name: add elastic repo and gather info
+    hosts: all
+    become: yes
+    roles:
+      - apt_update
+
+  - name: install prometheus node exporters
+    hosts: all
+    become: yes
+    gather_facts: no
+    roles:
+      - node_exporter
+      - reverse_proxy
+
+  - name: install prometheus
+    hosts: prometheus
+    become: yes
+    gather_facts: no
+    roles:
+      - prometheus
+      - reverse_proxy
+
+  - name: install grafana
+    hosts: grafana
+    become: yes
+    gather_facts: no
+    roles:
+      - grafana
+      - reverse_proxy

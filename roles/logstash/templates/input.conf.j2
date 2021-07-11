@@ -1,0 +1,8 @@
+input {
+  tcp {
+    port => {{ logstash_port }}
+    {% comment %}
+    type => rsyslog #
+    {% endcomment %}
+  }
+}

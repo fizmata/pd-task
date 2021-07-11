@@ -1,0 +1,16 @@
+---
+  - name: install apt https transport
+    apt:
+      name:
+        - apt-transport-https
+
+  - name: Add Elastic GPG Key
+    ansible.builtin.apt_key:
+      url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+      state: present
+
+  - name: Add elastic repository.
+    apt_repository:
+      repo: 'deb https://artifacts.elastic.co/packages/7.x/apt stable main'
+      state: present
+      update_cache: true

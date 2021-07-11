@@ -1,0 +1,11 @@
+---
+  - name: Exporter packages
+    apt:
+      name:
+        - prometheus-node-exporter
+
+  - name: enable service
+    service:
+      name: prometheus-node-exporter
+      state: started
+      enabled: true

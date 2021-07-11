@@ -1,0 +1,25 @@
+---
+  - name: prometheus package
+    apt:
+      name: prometheus
+
+  - name: enable service
+    service:
+      name: prometheus
+      state: started
+      enabled: true
+
+  - name: prometheus config
+    template:
+      src: prometheus.yaml.j2
+      dest: /etc/prometheus/prometheus.yml
+    notify:
+      - Restart prometheus
+
+  - name: Adjust prometheus reachability
+    lineinfile:
+      path: /etc/default/prometheus
+      regexp: '^ARGS='
+      line: ARGS='--web.external-url=http://{{ hostvars[groups['prometheus'][0]]['ansible_default_ipv4']['address']}}/prometheus'
+    notify:
+      - Restart prometheus

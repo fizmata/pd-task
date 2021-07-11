@@ -1,0 +1,35 @@
+server{
+  listen 80 default_server;
+  root /var/www/html;
+
+  location /metrics {
+      proxy_pass http://localhost:9100/metrics;
+  }
+
+  {% if inventory_hostname in groups['prometheus'] %}
+  location /prometheus {
+      proxy_pass http://localhost:9090;
+  }
+  {% endif %}
+
+  {% if inventory_hostname in groups['grafana'] %}
+  location /grafana {
+      proxy_pass http://localhost:3000;
+  }
+  {% endif %}
+
+  {% if inventory_hostname in groups['kibana']  %}
+  location / {
+      auth_basic "Restricted Access";
+      auth_basic_user_file /etc/nginx/htpasswd.users;
+      proxy_pass http://localhost:5601;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection 'upgrade';
+      proxy_set_header Host $host;
+      proxy_cache_bypass $http_upgrade;
+
+  }
+  {% endif %}
+
+}

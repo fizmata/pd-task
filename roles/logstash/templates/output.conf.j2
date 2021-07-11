@@ -1,0 +1,7 @@
+output {
+  elasticsearch {
+    hosts => ["{{hostvars[groups['es_master'][0]]['ansible_default_ipv4']['address']}}",
+    "{{hostvars[groups['es_data'][0]]['ansible_default_ipv4']['address']}}",
+    "{{hostvars[groups['es_data'][1]]['ansible_default_ipv4']['address']}}"]
+    }
+}

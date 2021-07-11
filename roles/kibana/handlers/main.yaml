@@ -1,0 +1,6 @@
+---
+  - name: restart kibana
+    service:
+      name: kibana
+      enabled: yes
+      state: restarted

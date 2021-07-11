@@ -1,0 +1,73 @@
+---
+  - name: Install jdk & elasticsearch
+    apt:
+      name:
+        - openjdk-8-jdk
+        - elasticsearch
+
+  - name: give cluster a name
+    lineinfile:
+      path: /etc/elasticsearch/elasticsearch.yml
+      regexp: '^cluster\.name:'
+      line: "cluster.name: {{ cluster_name }}"
+    notify: restart elasticsearch
+
+  - name: give nodes names
+    lineinfile:
+      path: /etc/elasticsearch/elasticsearch.yml
+      regexp: '^node\.name:'
+      line: 'node.name: es-{{ inventory_hostname }}'
+    notify: restart elasticsearch
+
+  - name: set as master node
+    lineinfile:
+      path: /etc/elasticsearch/elasticsearch.yml
+      regexp: '^node\.master'
+      line: 'node.master: true'
+    notify: restart elasticsearch
+    when: inventory_hostname in groups['es_master']
+
+  - name: set as data node
+    lineinfile:
+      path: /etc/elasticsearch/elasticsearch.yml
+      regexp: '^node\.data'
+      line: 'node.data: true'
+    notify: restart elasticsearch
+    when: inventory_hostname in groups['es_data']
+
+  - name: enter the private IP of the host
+    lineinfile:
+      path: /etc/elasticsearch/elasticsearch.yml
+      regexp: '^network\.host:'
+      line: "network.host: {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+    notify: restart elasticsearch
+
+  - name: bind the port
+    lineinfile:
+      path: /etc/elasticsearch/elasticsearch.yml
+      regexp: '^http\.port:'
+      line: "http.port: {{ es_port }}"
+    notify: restart elasticsearch
+
+  - name: private IPs of nodes
+    lineinfile:
+      path: /etc/elasticsearch/elasticsearch.yml
+      regexp: '^discovery\.seed_hosts:'
+      line: >
+        discovery.seed_hosts:
+        {{ hostvars[groups['es_master'][0]]['ansible_default_ipv4']['address'] }}
+    notify: restart elasticsearch
+
+  - name: private IPs of nodes
+    lineinfile:
+      path: /etc/elasticsearch/elasticsearch.yml
+      regexp: '^cluster\.initial_master_nodes:'
+      line: "cluster.initial_master_nodes: es-vm-1"
+    notify: restart elasticsearch
+
+
+  - name: enable service
+    service:
+      name: elasticsearch
+      state: started
+      enabled: true
