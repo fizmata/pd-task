@@ -8,12 +8,12 @@
 
   - name: Download package
     get_url:
-      url: https://dl.grafana.com/oss/release/grafana_8.0.5_amd64.deb
-      dest: /tmp/grafana_8.0.5_amd64.deb
+      url: https://dl.grafana.com/oss/release/grafana_7.3.7_amd64.deb
+      dest: /tmp/grafana_7.3.7_amd64.deb
 
   - name: Install package
     apt:
-      deb: /tmp/grafana_8.0.5_amd64.deb
+      deb: /tmp/grafana_7.3.7_amd64.deb
 
   - name: config
     template:

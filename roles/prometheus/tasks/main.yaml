@@ -23,3 +23,11 @@
       line: ARGS='--web.external-url=http://{{ hostvars[groups['prometheus'][0]]['ansible_default_ipv4']['address']}}/prometheus'
     notify:
       - Restart prometheus
+
+  - name: Add prometheus authentication
+    lineinfile:
+      state: present
+      regexp: "^{{prometheus_user}}:"
+      path: /etc/nginx/prometheus.users
+      line: "{{prometheus_user}}:{{prometheus_pw}}"
+      create: yes

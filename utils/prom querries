@@ -1,2 +1,0 @@
-avg (irate(process_cpu_seconds_total{job="node", instance="172.31.25.193:9100"}[1m]))
-(node_filesystem_free_bytes{job="node", instance="172.31.25.193:9100"})

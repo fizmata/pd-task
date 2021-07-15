@@ -1,7 +1,6 @@
-vm-1 ansible_host=13.51.55.18 ansible_port=22 ansible_ssh_user=ubuntu ansible_python_interpreter=python3
-vm-2 ansible_host=13.49.69.218 ansible_port=22 ansible_ssh_user=ubuntu ansible_python_interpreter=python3
-vm-3 ansible_host=13.49.76.189 ansible_port=22 ansible_ssh_user=ubuntu ansible_python_interpreter=python3
-
+vm-1 ansible_host=18.205.161.248 ansible_port=22 ansible_ssh_user=ubuntu ansible_python_interpreter=python3
+vm-2 ansible_host=18.212.53.13 ansible_port=22 ansible_ssh_user=ubuntu ansible_python_interpreter=python3
+vm-3 ansible_host=18.234.164.188 ansible_port=22 ansible_ssh_user=ubuntu ansible_python_interpreter=python3
 
 [kibana]
 vm-1

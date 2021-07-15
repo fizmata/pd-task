@@ -1,5 +1,6 @@
 input {
   tcp {
     port => {{ logstash_port }}
+    type => rsyslog #
   }
 }

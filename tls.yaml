@@ -1,0 +1,7 @@
+---
+  - name: get cert
+    hosts: kibana
+    become: yes
+    roles:
+      - apt_update
+      - tls
